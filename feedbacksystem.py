@@ -63,7 +63,6 @@ def parse_payment_json(data: dict):
 
 
 # Function to send WhatsApp message using the WhatsApp Business API.
-
 async def send_whatsapp_message(phone: str, firstname: str):
     url = "https://graph.facebook.com/v14.0/506280399227577/messages"  
     headers = {
