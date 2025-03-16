@@ -1,18 +1,31 @@
-from fastapi import FastAPI, BackgroundTasks, HTTPException
+from fastapi import FastAPI, BackgroundTasks, HTTPException,Request
 from pydantic import BaseModel
 import re
 import httpx
 import uvicorn
+import os
 
 # SQLAlchemy imports for database handling
 from sqlalchemy import create_engine, Column, Integer, String, Text, ForeignKey
 from sqlalchemy.orm import sessionmaker, declarative_base, Session
+
+# loading environment variables
+CONSUMER_KEY = os.getenv("MPESA_CONSUMER_KEY")
+CONSUMER_SECRET = os.getenv("MPESA_CONSUMER_SECRET")
+SHORTCODE = os.getenv("MPESA_CONSUMER_KEY")
+CONFIRMATION_URL = os.getenv("CONFIRMATION_URL")
+VALIDATION_URL = os.getenv("VALIDATION_URL")
+TOKEN_URL = os.getenv("TOKEN_URL")
+REGISTER_URL = os.getenv("REGISTER_URL")
+
 
 # --- Database Setup ---
 DATABASE_URL = "sqlite:///./feedback.db"
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
 Base = declarative_base()
+
+
 
 # Define Customer and Feedback models
 class Customer(Base):
@@ -60,6 +73,33 @@ def parse_payment_json(data: dict):
     
     return transaction_id, firstname, secondname, lastname, phone
 
+# function to get access token
+def get_access_token():
+    try:
+        auth = f"{CONSUMER_KEY}:{CONSUMER_SECRET}"
+        encoded_auth = base64.b64encode(auth.encode()).decode()
+        headers = {"Authorization":f"Basic {encoded_auth}"}
+        response = requests.get(TOKEN_URL,headers=headers,timeout=10)
+        response.raise_for_status()
+        return response.json().get("access_token")
+    except requests.exceptions.RequestException as e:
+        raise HTTPExecption(status_code=500,detail="failed to authenticate with Mpesa API")
+
+# function to register confirmation and validation url
+def register_confirmation_url():
+    try:
+        token = get_access_token()
+        headers = {"Authorization":"Bearer {token}","Content-Type":"Application/json"}
+        data = {
+            "ShortCode":SHORTCODE,
+            "ResponeType":"Completed",
+            "ConfirmationURL":CONFIRMATION_URL
+        }
+        response = requests.post(REGISTER_URL,json=data,headers=headers,timeout=10)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        raise HTTPExecption(status_code=500,detail="failed to register confirmation url")
 
 
 # Function to send WhatsApp message using the WhatsApp Business API.
@@ -86,6 +126,10 @@ async def send_whatsapp_message(phone: str, firstname: str):
         if response.status_code != 200:
             # Log the error or implement retry logic as needed
             print(f"Failed to send WhatsApp message: {response.text}")
+
+@app.on_event("startup")
+async def startup_event():
+    response = register_confirmation_url()
 
 # Payment confirmation endpoint
 @app.post("/payment-confirmation")
