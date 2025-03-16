@@ -12,7 +12,7 @@ from sqlalchemy.orm import sessionmaker, declarative_base, Session
 # loading environment variables
 CONSUMER_KEY = os.getenv("MPESA_CONSUMER_KEY")
 CONSUMER_SECRET = os.getenv("MPESA_CONSUMER_SECRET")
-SHORTCODE = os.getenv("MPESA_CONSUMER_KEY")
+SHORTCODE = os.getenv("MPESA_SHORTCODE")
 CONFIRMATION_URL = os.getenv("CONFIRMATION_URL")
 VALIDATION_URL = os.getenv("VALIDATION_URL")
 TOKEN_URL = os.getenv("TOKEN_URL")
