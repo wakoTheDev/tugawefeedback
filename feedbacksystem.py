@@ -5,6 +5,7 @@ import requests
 import httpx
 import uvicorn
 import os
+import base64
 
 # SQLAlchemy imports for database handling
 from sqlalchemy import create_engine, Column, Integer, String, Text, ForeignKey
