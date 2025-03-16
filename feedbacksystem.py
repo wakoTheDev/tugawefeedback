@@ -85,7 +85,7 @@ def get_access_token():
         response.raise_for_status()
         return response.json().get("access_token")
     except requests.exceptions.RequestException as e:
-        raise HTTPExecption(status_code=500,detail="failed to authenticate with Mpesa API")
+        raise HTTPException(status_code=500,detail="failed to authenticate with Mpesa API")
 
 # function to register confirmation and validation url
 def register_confirmation_url():
@@ -101,7 +101,7 @@ def register_confirmation_url():
         response.raise_for_status()
         return response.json()
     except requests.exceptions.RequestException as e:
-        raise HTTPExecption(status_code=500,detail="failed to register confirmation url")
+        raise HTTPException(status_code=500,detail="failed to register confirmation url")
 
 
 # Function to send WhatsApp message using the WhatsApp Business API.
