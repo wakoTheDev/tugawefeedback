@@ -17,7 +17,7 @@ CONSUMER_SECRET = os.getenv("MPESA_CONSUMER_SECRET")
 SHORTCODE = os.getenv("MPESA_SHORTCODE")
 CONFIRMATION_URL = os.getenv("CONFIRMATION_URL")
 # VALIDATION_URL = os.getenv("VALIDATION_URL")
-TOKEN_URL = os.getenv("TOKEN_URL")
+TOKEN_URL = "https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials"
 REGISTER_URL = os.getenv("REGISTER_URL")
 
 
