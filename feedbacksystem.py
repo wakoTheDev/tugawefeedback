@@ -12,13 +12,13 @@ from sqlalchemy import create_engine, Column, Integer, String, Text, ForeignKey
 from sqlalchemy.orm import sessionmaker, declarative_base, Session
 
 # loading environment variables
-CONSUMER_KEY = os.getenv("MPESA_CONSUMER_KEY")
-CONSUMER_SECRET = os.getenv("MPESA_CONSUMER_SECRET")
-SHORTCODE = os.getenv("MPESA_SHORTCODE")
-CONFIRMATION_URL = os.getenv("CONFIRMATION_URL")
-# VALIDATION_URL = os.getenv("VALIDATION_URL")
+CONSUMER_KEY = os.environ.get("MPESA_CONSUMER_KEY")
+CONSUMER_SECRET = os.environ.get("MPESA_CONSUMER_SECRET")
+SHORTCODE = os.environ.get("MPESA_SHORTCODE")
+CONFIRMATION_URL = os.environ.get("CONFIRMATION_URL")
+# VALIDATION_URL = os.environ.get("VALIDATION_URL")
 TOKEN_URL = "https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials"
-REGISTER_URL = os.getenv("REGISTER_URL")
+REGISTER_URL = os.environ.get("REGISTER_URL")
 
 
 # --- Database Setup ---
