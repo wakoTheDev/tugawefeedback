@@ -2,3 +2,4 @@ requests
 python-dotenv
 fastapi[standard]
 sqlalchemy
+pybase64
