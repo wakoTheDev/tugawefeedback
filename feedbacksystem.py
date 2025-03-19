@@ -93,7 +93,7 @@ def get_access_token():
         }
         
         # Make sure to use the correct URL and parameters
-        url = os.environ.get('TOKEN_URL','https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials')
+        url = os.environ.get('TOKEN_URL','https://api.safaricom.co.ke/oauth/v1/generate')
         response = requests.get(
             url,
             headers=headers,
