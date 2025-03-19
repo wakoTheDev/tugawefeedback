@@ -85,7 +85,7 @@ def get_access_token():
         }
         
         # Make the API request
-        url = "https://sandbox.safaricom.co.ke/oauth/v1/generate"  # Use sandbox URL for testing
+        url = "https://sandbox.safaricom.co.ke/oauth/v1/generate"  
         params = {'grant_type': 'client_credentials'}
         
         print(f"Making request to: {url}")
@@ -99,7 +99,7 @@ def get_access_token():
         )
         
         print(f"Response status code: {response.status_code}")
-        print(f"Response body: {response.text[:100]}...")  # Print first 100 chars for debugging
+        print(f"Response body: {response.text[:100]}...") 
         
         # Check for errors
         response.raise_for_status()
@@ -136,11 +136,11 @@ def register_confirmation_url():
         
         data = {
             "ShortCode": shortcode,
-            "ResponseType": "Completed",  # Fixed typo in "ResponseType"
+            "ResponseType": "Completed",  
             "ConfirmationURL": confirmation_url
         }
         
-        register_url = "https://sandbox.safaricom.co.ke/mpesa/c2b/v1/registerurl"  # Use sandbox URL for testing
+        register_url = "https://sandbox.safaricom.co.ke/mpesa/c2b/v1/registerurl" 
         
         print(f"Registering URL: {register_url}")
         print(f"With data: {data}")
@@ -168,7 +168,7 @@ def register_confirmation_url():
 async def send_whatsapp_message(phone: str, firstname: str):
     url = "https://graph.facebook.com/v14.0/506280399227577/messages"  
     headers = {
-        "Authorization": f"Bearer {os.environ.get('WHATSAPP_API_TOKEN')}",  # Use environment variable instead of hardcoded token
+        "Authorization": f"Bearer {os.environ.get('WHATSAPP_API_TOKEN')}",  
         "Content-Type": "application/json"
     }
     payload = {
