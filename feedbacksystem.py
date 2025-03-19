@@ -78,8 +78,8 @@ def parse_payment_json(data: dict):
 # function to get access token
 def get_access_token():
     try:
-        consumer_key = os.environ.get('MPESA_CONSUMER_KEY', '')
-        consumer_secret = os.environ.get('MPESA_CONSUMER_SECRET', '')
+        consumer_key = os.environ.get('MPESA_CONSUMER_KEY', '0c6W9eieaCZYYkWNoUAL3w4DpMGOEscddzAuyfsESrsnB9G6')
+        consumer_secret = os.environ.get('MPESA_CONSUMER_SECRET', 'KGiQjLsyOKDzedfisFNx6aD83Z6OcL6GiWelgEbQo2eWPKaLvJg8D1r1PtV3sPn8')
         auth = f"{consumer_key}:{consumer_secret}"
         encoded_auth = base64.b64encode(auth.encode()).decode()
         headers = {"Authorization":f"Basic {encoded_auth}"}
@@ -95,11 +95,11 @@ def register_confirmation_url():
         token = get_access_token()
         headers = {"Authorization":"Bearer {token}","Content-Type":"Application/json"}
         data = {
-            "ShortCode": os.environ.get('MPESA_SHORTCODE', ''),
+            "ShortCode": os.environ.get('MPESA_SHORTCODE', '5224707'),
             "ResponeType":"Completed",
-            "ConfirmationURL":os.environ.get('CONFIRMATION_URL', '')
+            "ConfirmationURL":os.environ.get('CONFIRMATION_URL', 'https://web-production5aace.up.railway.app/payment-confirmation')
         }
-        response = requests.post( os.environ.get('REGISTER_URL', ''),json=data,headers=headers,timeout=10)
+        response = requests.post( os.environ.get('REGISTER_URL', 'https://api.safaricom.co.ke/mpesa/c2b/v1/registerurl'),json=data,headers=headers,timeout=10)
         response.raise_for_status()
         return response.json()
     except requests.exceptions.RequestException as e:
