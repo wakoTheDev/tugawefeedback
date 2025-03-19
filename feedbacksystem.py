@@ -78,7 +78,9 @@ def parse_payment_json(data: dict):
 # function to get access token
 def get_access_token():
     try:
-        auth = f"{${{MPESA_CONSUMER_KEY}}}:{${{MPESA_CONSUMER_SECRET}}}"
+        consumer_key = os.environ.get('MPESA_CONSUMER_KEY', '')
+        consumer_secret = os.environ.get('MPESA_CONSUMER_SECRET', '')
+        auth = f"{consumer_key}:{consumer_secret}"
         encoded_auth = base64.b64encode(auth.encode()).decode()
         headers = {"Authorization":f"Basic {encoded_auth}"}
         response = requests.get(${{TOKEN_URL}},headers=headers,timeout=10)
