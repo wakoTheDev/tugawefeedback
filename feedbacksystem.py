@@ -78,16 +78,39 @@ def parse_payment_json(data: dict):
 # function to get access token
 def get_access_token():
     try:
-        consumer_key = os.environ.get('MPESA_CONSUMER_KEY', '0c6W9eieaCZYYkWNoUAL3w4DpMGOEscddzAuyfsESrsnB9G6')
-        consumer_secret = os.environ.get('MPESA_CONSUMER_SECRET', 'KGiQjLsyOKDzedfisFNx6aD83Z6OcL6GiWelgEbQo2eWPKaLvJg8D1r1PtV3sPn8')
-        auth = f"{consumer_key}:{consumer_secret}"
-        encoded_auth = base64.b64encode(auth.encode()).decode()
-        headers = {"Authorization":f"Basic {encoded_auth}"}
-        response = requests.get( os.environ.get('TOKEN_URL', 'https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials'),headers=headers,timeout=10)
+        consumer_key = os.environ.get('MPESA_CONSUMER_KEY','0c6W9eieaCZYYkWNoUAL3w4DpMGOEscddzAuyfsESrsnB9G6')
+        consumer_secret = os.environ.get('MPESA_CONSUMER_SECRET','KGiQjLsyOKDzedfisFNx6aD83Z6OcL6GiWelgEbQo2eWPKaLvJg8D1r1PtV3sPn8')
+        
+        # Create the auth string and encode it
+        auth_string = f"{consumer_key}:{consumer_secret}"
+        auth_bytes = auth_string.encode('ascii')
+        auth_base64 = base64.b64encode(auth_bytes).decode('ascii')
+        
+        # Set up headers with the correct Authorization format
+        headers = {
+            "Authorization": f"Basic {auth_base64}",
+            "Content-Type": "application/json"
+        }
+        
+        # Make sure to use the correct URL and parameters
+        url = os.environ.get('TOKEN_URL','https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials')
+        response = requests.get(
+            url,
+            headers=headers,
+            params={'grant_type': 'client_credentials'},
+            timeout=10
+        )
+        
+        # Check for errors
         response.raise_for_status()
-        return response.json().get("access_token")
-    except requests.exceptions.RequestException as e:
-        raise HTTPException(status_code=500,detail="failed to authenticate with Mpesa API")
+        
+        # Parse and return the access token
+        data = response.json()
+        return data['access_token']
+        
+    except Exception as e:
+        print(f"Authentication error: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to authenticate with Mpesa API")
 
 # function to register confirmation and validation url
 def register_confirmation_url():
