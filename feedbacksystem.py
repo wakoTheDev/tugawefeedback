@@ -78,17 +78,17 @@ def parse_payment_json(data: dict):
 # function to get access token
 def get_access_token():
     try:
-        # consumer_key = os.environ.get('MPESA_CONSUMER_KEY','0c6W9eieaCZYYkWNoUAL3w4DpMGOEscddzAuyfsESrsnB9G6')
-        # consumer_secret = os.environ.get('MPESA_CONSUMER_SECRET','KGiQjLsyOKDzedfisFNx6aD83Z6OcL6GiWelgEbQo2eWPKaLvJg8D1r1PtV3sPn8')
+        consumer_key = os.environ.get('MPESA_CONSUMER_KEY','0c6W9eieaCZYYkWNoUAL3w4DpMGOEscddzAuyfsESrsnB9G6')
+        consumer_secret = os.environ.get('MPESA_CONSUMER_SECRET','KGiQjLsyOKDzedfisFNx6aD83Z6OcL6GiWelgEbQo2eWPKaLvJg8D1r1PtV3sPn8')
         
-        # # Create the auth string and encode it
-        # auth_string = f"{consumer_key}:{consumer_secret}"
-        # auth_bytes = auth_string.encode('ascii')
-        # auth_base64 = base64.b64encode(auth_bytes).decode('ascii')
+        # Create the auth string and encode it
+        auth_string = f"{consumer_key}:{consumer_secret}"
+        auth_bytes = auth_string.encode('ascii')
+        auth_base64 = base64.b64encode(auth_bytes).decode('ascii')
         
         # Set up headers with the correct Authorization format
         headers = {
-            "Authorization": f"Basic CoP1KyH0vWlgJ0cAFSOMMkQH8k8tzGV1MwQRj77NbY9vwNyIK1TbLZrorIhZO/rN3V/LgCHCdGn5uuG1ZyY9OA6PJUrsy2xDp4lkVtP2Vacw085imlxEj+nZCVi3L0bExc24WPBVRDJ0by/VSgQqFRSF3moy7+4brKXM/0W3EX27FBqysfUopywuXkIjDOs1JaC2nzHtjgpNPtrddhZDtbrjXWJYJaJTB1sHcTJgUzt15WiXMjaccEcmvgH/j09i45zU3nsWM7KKqsFeTnMb4WHJgre5y2JHtQoC0xiaY5463nAKJGQst9uer6Z4lYCvVEt9ZhfqT74k0sHnKn98uA==",
+            "Authorization": f"Basic {auth_base64}",
             "Content-Type": "application/json"
         }
         
