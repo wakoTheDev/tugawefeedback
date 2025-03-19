@@ -83,7 +83,7 @@ def get_access_token():
         auth = f"{consumer_key}:{consumer_secret}"
         encoded_auth = base64.b64encode(auth.encode()).decode()
         headers = {"Authorization":f"Basic {encoded_auth}"}
-        response = requests.get(${{TOKEN_URL}},headers=headers,timeout=10)
+        response = requests.get( os.environ.get('TOKEN_URL', ''),headers=headers,timeout=10)
         response.raise_for_status()
         return response.json().get("access_token")
     except requests.exceptions.RequestException as e:
@@ -95,11 +95,11 @@ def register_confirmation_url():
         token = get_access_token()
         headers = {"Authorization":"Bearer {token}","Content-Type":"Application/json"}
         data = {
-            "ShortCode":${{MPESA_SHORTCODE}},
+            "ShortCode": os.environ.get('MPESA_SHORTCODE', ''),
             "ResponeType":"Completed",
-            "ConfirmationURL":${{CONFIRMATION_URL}}
+            "ConfirmationURL":os.environ.get('CONFIRMATION_URL', '')
         }
-        response = requests.post(${{REGISTER_URL}},json=data,headers=headers,timeout=10)
+        response = requests.post( os.environ.get('REGISTER_URL', ''),json=data,headers=headers,timeout=10)
         response.raise_for_status()
         return response.json()
     except requests.exceptions.RequestException as e:
