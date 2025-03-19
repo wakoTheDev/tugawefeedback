@@ -85,7 +85,7 @@ def get_access_token():
         }
         
         # Make the API request
-        url = "https://sandbox.safaricom.co.ke/oauth/v1/generate"  
+        url = "https://api.safaricom.co.ke/oauth/v1/generate"  
         params = {'grant_type': 'client_credentials'}
         
         print(f"Making request to: {url}")
@@ -142,7 +142,7 @@ def register_confirmation_url():
             "ValidationURL":validation_url
         }
         
-        register_url = "https://sandbox.safaricom.co.ke/mpesa/c2b/v1/registerurl" 
+        register_url = "https://api.safaricom.co.ke/mpesa/c2b/v1/registerurl" 
         
         print(f"Registering URL: {register_url}")
         print(f"With data: {data}")
