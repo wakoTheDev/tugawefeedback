@@ -12,13 +12,13 @@ from sqlalchemy import create_engine, Column, Integer, String, Text, ForeignKey
 from sqlalchemy.orm import sessionmaker, declarative_base, Session
 
 # loading environment variables
-CONSUMER_KEY = os.environ.get(${{shared.MPESA_CONSUMER_KEY}})
-CONSUMER_SECRET = os.environ.get(${{shared.MPESA_CONSUMER_SECRET}})
-SHORTCODE = os.environ.get(${{shared.MPESA_SHORTCODE}})
-CONFIRMATION_URL = os.environ.get(${{shared.CONFIRMATION_URL}})
-# VALIDATION_URL = os.environ.get(${{shared.VALIDATION_URL}})
-TOKEN_URL = os.environ.get(${{shared.TOKEN_URL}},"https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials")
-REGISTER_URL = os.environ.get(${{shared.REGISTER_URL}})
+# CONSUMER_KEY = os.environ.get(${{shared.MPESA_CONSUMER_KEY}})
+# CONSUMER_SECRET = os.environ.get(${{shared.MPESA_CONSUMER_SECRET}})
+# SHORTCODE = os.environ.get(${{shared.MPESA_SHORTCODE}})
+# CONFIRMATION_URL = os.environ.get(${{shared.CONFIRMATION_URL}})
+# # VALIDATION_URL = os.environ.get(${{shared.VALIDATION_URL}})
+# TOKEN_URL = os.environ.get(${{shared.TOKEN_URL}},"https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials")
+# REGISTER_URL = os.environ.get(${{shared.REGISTER_URL}})
 
 
 # --- Database Setup ---
@@ -78,10 +78,10 @@ def parse_payment_json(data: dict):
 # function to get access token
 def get_access_token():
     try:
-        auth = f"{CONSUMER_KEY}:{CONSUMER_SECRET}"
+        auth = f"{${{MPESA_CONSUMER_KEY}}}:{${{MPESA_CONSUMER_SECRET}}}"
         encoded_auth = base64.b64encode(auth.encode()).decode()
         headers = {"Authorization":f"Basic {encoded_auth}"}
-        response = requests.get(TOKEN_URL,headers=headers,timeout=10)
+        response = requests.get(${{TOKEN_URL}},headers=headers,timeout=10)
         response.raise_for_status()
         return response.json().get("access_token")
     except requests.exceptions.RequestException as e:
@@ -93,11 +93,11 @@ def register_confirmation_url():
         token = get_access_token()
         headers = {"Authorization":"Bearer {token}","Content-Type":"Application/json"}
         data = {
-            "ShortCode":SHORTCODE,
+            "ShortCode":${{MPESA_SHORTCODE}},
             "ResponeType":"Completed",
-            "ConfirmationURL":CONFIRMATION_URL
+            "ConfirmationURL":${{CONFIRMATION_URL}}
         }
-        response = requests.post(REGISTER_URL,json=data,headers=headers,timeout=10)
+        response = requests.post(${{REGISTER_URL}},json=data,headers=headers,timeout=10)
         response.raise_for_status()
         return response.json()
     except requests.exceptions.RequestException as e:
