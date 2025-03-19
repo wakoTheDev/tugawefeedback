@@ -132,9 +132,9 @@ async def send_whatsapp_message(phone: str, firstname: str):
 @app.on_event("startup")
 async def startup_event():
     # Check if critical environment variables are set
-    if not all([CONSUMER_KEY, CONSUMER_SECRET, SHORTCODE, CONFIRMATION_URL, REGISTER_URL, TOKEN_URL]):
-        print("WARNING: Some critical environment variables are not set!")
-        return
+    # if not all([CONSUMER_KEY, CONSUMER_SECRET, SHORTCODE, CONFIRMATION_URL, REGISTER_URL, TOKEN_URL]):
+    #     print("WARNING: Some critical environment variables are not set!")
+    #     return
     response = register_confirmation_url()
 
 # Payment confirmation endpoint
