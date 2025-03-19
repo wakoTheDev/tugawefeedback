@@ -129,6 +129,7 @@ def register_confirmation_url():
         
         shortcode = os.environ.get('MPESA_SHORTCODE')
         confirmation_url = os.environ.get('CONFIRMATION_URL')
+        validation_url = os.environ.get('VALIDATION_URL')
         
         if not shortcode or not confirmation_url:
             print("Error: M-Pesa shortcode or confirmation URL not found in environment variables")
@@ -137,7 +138,8 @@ def register_confirmation_url():
         data = {
             "ShortCode": shortcode,
             "ResponseType": "Completed",  
-            "ConfirmationURL": confirmation_url
+            "ConfirmationURL": confirmation_url,
+            "ValidationURL":validation_url
         }
         
         register_url = "https://sandbox.safaricom.co.ke/mpesa/c2b/v1/registerurl" 
