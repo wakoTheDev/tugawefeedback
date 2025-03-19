@@ -83,7 +83,7 @@ def get_access_token():
         auth = f"{consumer_key}:{consumer_secret}"
         encoded_auth = base64.b64encode(auth.encode()).decode()
         headers = {"Authorization":f"Basic {encoded_auth}"}
-        response = requests.get( os.environ.get('TOKEN_URL', ''),headers=headers,timeout=10)
+        response = requests.get( os.environ.get('TOKEN_URL', 'https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials'),headers=headers,timeout=10)
         response.raise_for_status()
         return response.json().get("access_token")
     except requests.exceptions.RequestException as e:
